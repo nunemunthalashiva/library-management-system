@@ -1,4 +1,4 @@
-from library-dbms import app , mysql
+from library_dbms import app , mysql
 from flask import render_template , request ,redirect , url_for ,session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
