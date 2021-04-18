@@ -1,3 +1,3 @@
-from library-dbms import app
+from library_dbms import app
 
 app.run(debug=True)
