@@ -61,7 +61,8 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
 
-@app.route('add_user')
+#adding a user
+@app.route('/adduser')
 def adduser():
     msg=''
     if session['loggedin'] == True and str(session['user_id'])[0]='2':
@@ -79,9 +80,33 @@ def adduser():
                 cursor.execute('INSERT INTO user values (%s,%s,%s)',(user_id,password,address))
                 conn.commit()
                 msg='Successfully added users'
-                return redirect(url_for('librarian_home.html'))
+                return render_template('librarian_home.html',msg=msg)
             return render_template('adduser.html',msg=msg)
         msg='Please try again'
-        return render_template('add_user.html',msg=msg)
+        return render_template('adduser.html',msg=msg)
     msg='Librarian is not logged in'
-    return render_template('add_user.html',msg=msg)
+    return render_template('login.html',msg=msg)
+
+# add author
+@app.route('/addauthor')
+def addauthor():
+    msg=''
+    if session['loggedin'] == True and str(session['user_id'])[0]='2':
+        if request.method=='POST' and 'ISBN_number' in request.form and 'name' in request.form:
+            cursor=conn.cursor()
+            ISBN_number = request.form['ISBN_number']
+            name = request.form['author']
+            cursor.execute('SELECT * FROM author where ISBN_number = %s and name = %s',(ISBN_number,name))
+            auth = cursor.fetchone()
+            if auth:
+                msg='sorry this author and ISBN_number exists already'
+            else:
+                cursor.execute('INSERT INTO author values (%s,%s)',(ISBN_number,name))
+                conn.commit()
+                msg='Successfully added author and corresponding book'
+                return render_template('librarian_home.html',msg=msg)
+            return render_template('addauthor.html',msg=msg)
+        msg='please try again'
+        return render_template('addauthor.html',msg=msg)
+    msg='Librarian is not logged in'
+    return render_template('login.html',msg=msg)
