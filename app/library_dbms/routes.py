@@ -65,7 +65,7 @@ def logout():
 @app.route('/adduser')
 def adduser():
     msg=''
-    if session['loggedin'] == True and str(session['user_id'])[0]='2':
+    if session['loggedin'] == True and str(session['user_id'])[0] =='2':
         if request.method=='POST' and 'user_id' in request.form and 'password' in request.form and 'address' in request.form:
             conn=mysql.connect
             cursor=conn.cursor()
