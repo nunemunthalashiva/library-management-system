@@ -91,7 +91,7 @@ def adduser():
 @app.route('/addauthor')
 def addauthor():
     msg=''
-    if session['loggedin'] == True and str(session['user_id'])[0]='2':
+    if session['loggedin'] == True and str(session['user_id'])[0] =='2':
         if request.method=='POST' and 'ISBN_number' in request.form and 'name' in request.form:
             conn=mysql.connect
             cursor=conn.cursor()
@@ -116,7 +116,7 @@ def addauthor():
 
 def addbooks():
     msg=''
-    if session['loggedin']=True and str(session['user_id'])[0]=='2':
+    if session['loggedin'] ==True and str(session['user_id'])[0]=='2':
         if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form:
             conn=mysql.connect
             cursor=conn.cursor()
