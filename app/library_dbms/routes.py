@@ -13,7 +13,7 @@ def index():
             return render_template("student_home.html",msg=msg)
         elif str(session['user_id'])[0] == 2:
             return render_template("teacher_home.html",msg=msg)
-        return render_template("librarian_home.html",msg=msg
+        return render_template("librarian_home.html",msg=msg)
     return render_template("index.html",msg=msg)
 
 # returning about page
