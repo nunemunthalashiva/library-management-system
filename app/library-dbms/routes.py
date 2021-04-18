@@ -10,10 +10,10 @@ def index():
     if 'user_id' in session:
         msg='Already logged in returning to home page'
         if str(session['user_id'])[1]==1:
-            return render_template(student_home.html,msg=msg)
+            return render_template("student_home.html",msg=msg)
         elif str(session['user_id'])[0] == 2:
-            return render_template(teacher_home.html,msg=msg)
-        return render_template(librarian_home.html,msg=msg
+            return render_template("teacher_home.html",msg=msg)
+        return render_template("librarian_home.html",msg=msg
     return render_template("index.html",msg=msg)
 
 # returning about page
@@ -34,10 +34,10 @@ def login():
         user_id = request.form['user_id']
         password = request.form['password']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('select * from patient where user_id = %d and password = %s',(user_id,password))
+        cursor.execute('select * from user where user_id = %d and password = %s',(user_id,password))
         person=cursor.fetchone()
         if person:
-            msg='Successfully logged in'
+            msg="Successfully logged in"
             session['loggedin'] = True
             session['user_id'] = person['user_id']
             if str(person['user_id'])[0] == 1:
@@ -47,7 +47,7 @@ def login():
             elif str(person['user_id'])[0] == 3:
                 return render_template(librarian_home.html,msg=msg)
             else:
-                msg="Invalid Username!"
+                msg='Invalid Username!'
         else:
             msg="Invalid username  password"
             return render_template('login.html',msg=msg)
@@ -93,6 +93,7 @@ def addauthor():
     msg=''
     if session['loggedin'] == True and str(session['user_id'])[0]='2':
         if request.method=='POST' and 'ISBN_number' in request.form and 'name' in request.form:
+            conn=mysql.connect
             cursor=conn.cursor()
             ISBN_number = request.form['ISBN_number']
             name = request.form['author']
@@ -109,4 +110,29 @@ def addauthor():
         msg='please try again'
         return render_template('addauthor.html',msg=msg)
     msg='Librarian is not logged in'
+    return render_template('login.html',msg=msg)
+
+@app.route("/addbooks")
+
+def addbooks():
+    msg=''
+    if session['loggedin']=True and str(session['user_id'])[0]=='2':
+        if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form:
+            conn=mysql.connect
+            cursor=conn.cursor()
+            ISBN_number = request.form['ISBN_number']
+            copy_number = request.form['copy_number']
+            cursor.execute('SELECT * FROM books where ISBN_number = %s ',(ISBN_number,))
+            auth=cursor.fetchone()
+            if auth:
+                cursor.execute('UPDATE books SET copy_number = %s where ISBN_number = %s',(copy_number,ISBN_number))
+                conn.commit()
+                msg='successfully updated quantity of books'
+            else:
+                msg='sorry this ISBN_number doesnt seem to exists please add ISBN first'
+                return render_template('addauthor.html',msg=msg)
+            return render_template('librarian_home.html',msg=msg)
+        msg="Sorry please try again"
+        return render_template('addbooks.html',msg=msg)
+    msg="Sorry librarian not logged in"
     return render_template('login.html',msg=msg)
