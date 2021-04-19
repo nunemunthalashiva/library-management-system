@@ -5,7 +5,7 @@
     <title>Add books</title>
   </head>
   <body>
-    <form action="url_for('addbooks')" method="post">
+    <form action="{{ url_for('addbooks') }}" method="post">
       <div> {{msg}}</div>
       <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="ISBN_number" required><br><br>
       <input type="number" name="copy_number" placeholder="Enter number of copies" class="textbox" id="copy_number" required><br><br>

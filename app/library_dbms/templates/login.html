@@ -5,7 +5,7 @@
     <title>Please Login</title>
   </head>
   <body>
-    <form action="{{ url_for('login')}}" method="post" autocomplete="off">
+    <form action="{{ url_for('login') }}" method="post" autocomplete="off">
       <div> {{msg}}</div>
       <input type="number" name="user_id" placeholder="Enter Your User ID" class="textbox" id="user_id" required><br><br>
       <input type="password" name="password" placeholder="Enter Your Password" class="textbox" id="password" required><br><br>
