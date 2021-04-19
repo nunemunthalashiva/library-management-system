@@ -4,16 +4,11 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
 # returning index page when someone just opens website
-@app.route("/")
+@app.route('/')
+@app.route("/index")
 def index():
     msg=''
-    if 'user_id' in session:
-        msg='Already logged in returning to home page'
-        if str(session['user_id'])[0]==1:
-            return render_template("student_home.html",msg=msg)
-        elif str(session['user_id'])[0] == 2:
-            return render_template("teacher_home.html",msg=msg)
-        return render_template("librarian_home.html",msg=msg)
+
     return render_template("index.html",msg=msg)
 
 # returning about page
@@ -30,11 +25,21 @@ def page_not_found(error):
 @app.route("/login",methods=['GET','POST'])
 def login():
     msg=''
+    if session['loggedin']==True:
+        msg='You are already logged in'
+        if str(session['user_id'])[0]==1:
+            return render_template('student_home.html',msg=msg)
+        elif str(session['user_id'])[0]==2:
+            return render_template('teacher_home.html',msg=msg)
+        else:
+            return render_template('librarian_home.html',msg=msg)
+    if request.method == 'GET':
+        return render_template('login.html',msg=msg)
     if request.method == 'POST' and 'user_id' in request.form and 'password' in request.form :
         user_id = request.form['user_id']
         password = request.form['password']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('select * from user where user_id = %d and password = %s',(user_id,password))
+        cursor.execute('select * from user where user_id = %s and password = %s',(user_id,password))
         person=cursor.fetchone()
         if person:
             msg="Successfully logged in"
