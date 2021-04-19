@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Add books</title>
+  </head>
+  <body>
+    <form action="url_for('addbooks')" method="post">
+      <div> {{msg}}</div>
+      <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="ISBN_number" required><br><br>
+      <input type="text" name="name" placeholder="Enter name of author" class="textbox" id="name" required><br><br>
+      <input type="submit" value="Register">
+    </form>
+  </body>
+</html>

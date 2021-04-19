@@ -9,3 +9,6 @@ TESTING = True
 DEBUG = True
 FLASK_ENV = 'development'
 SECRET_KEY = environ.get('SECRET_KEY')
+MYSQL_HOST = 'localhost'
+MYSQL_PASSWORD = 'shiva#mysql'
+MYSQL_DB = 'library-dbms'

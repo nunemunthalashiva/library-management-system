@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Please Login</title>
+  </head>
+  <body>
+    <form action="{{ url_for('login')}}" method="post" autocomplete="off">
+      <div> {{msg}}</div>
+      <input type="number" name="user_id" placeholder="Enter Your User ID" class="textbox" id="user_id" required><br><br>
+      <input type="password" name="password" placeholder="Enter Your Password" class="textbox" id="password" required><br><br>
+      <input type="submit" value="Login">
+    </form>
+  </body>
+</html>
