@@ -2,7 +2,7 @@ from library_dbms import app , mysql
 from flask import render_template , request ,redirect , url_for ,session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-
+from datetime import date,timedelta
 # returning index page when someone just opens website
 
 @app.route('/')
@@ -239,10 +239,11 @@ def booksplace():
     return render_template('login.html',msg=msg)
 
 #-----------order_books---------
-@app.route('/order_books')
+
+@app.route('/order_books',methods=['GET','POST'])
 def order_books():
     msg=''
-    if 'user_id' in session and (str(session['user_id'])[0] == 1 or str(session['user_id'])[0]== 2):
+    if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
         if request.method=='GET':
             return render_template("order_books.html",msg=msg)
         if request.method=='POST' and 'ISBN_number' in request.form and 'status' in request.form :
@@ -252,7 +253,7 @@ def order_books():
             status = request.form['status']
             date_booked = date.today()
             due_date = date.today()
-            if (str(session['user_id'])[0])==1:
+            if (str(session['user_id'])[0])=='1':
                 due_date = date_booked + timedelta(days=+10)
             else:
                 due_date = date_booked + timedelta(days=+1000000000)
@@ -261,7 +262,7 @@ def order_books():
             if ISBN_numbers:
                 cursor.execute(("select ((select copy_number from books where ISBN_number=(%s))-(select count(*) from order_books where status_of_book<>(%s) and ISBN_number=(%s))) as Difference"),(ISBN_number,'on_shelf',ISBN_number,))
                 avaliable_books = cursor.fetchone()
-                if avaliable_books>=1:
+                if avaliable_books:
                     cursor.execute("INSERT INTO order_books VALUES(%s,%s,%s,%s,%s)",(user_id,ISBN_number,status,date_booked,due_date,))
                     mysql.connection.commit()
                     msg='ordered successfully'
@@ -276,7 +277,7 @@ def order_books():
     return render_template('login.html',msg=msg)
 
 #---------------------------add_to_cart----------------------------------------------------------
-@app.route('/add_to_cart')
+@app.route('/add_to_cart',methods=['GET','POST'])
 def add_to_cart():
     msg=''
     if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
@@ -286,7 +287,7 @@ def add_to_cart():
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             user_id = session['user_id']
             ISBN_number = request.form['ISBN_number']
-            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number))
+            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
             ISBN_numbers=cursor.fetchone()
             if ISBN_numbers:
                 cursor.execute("SELECT * FROM add_to_cart WHERE user_id=(%s) and ISBN_number=(%s)",(user_id,ISBN_number,))
@@ -306,7 +307,7 @@ def add_to_cart():
     return render_template('login.html',msg=msg)
 
 #----------------------------review------------------------
-@app.route('/review')
+@app.route('/review',methods=['GET','POST'])
 def review():
     msg=''
     if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
@@ -318,11 +319,11 @@ def review():
             ISBN_number = request.form['ISBN_number']
             rating = request.form['rating']
             discription = request.form['discription']
-            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number))
+            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
             ISBN_numbers=cursor.fetchone()
             if ISBN_numbers:
                 on_hold='on_hold'
-                cursor.execute("SELECT * FROM order_books WHERE user_id=(%s) AND ISBN_number=(%s) AND status<>(%s)",(user_id,ISBN_number,on_hold,))
+                cursor.execute("SELECT * FROM order_books WHERE user_id=(%s) AND ISBN_number=(%s) AND status_of_book<>(%s)",(user_id,ISBN_number,on_hold,))
                 present = cursor.fetchone()
                 if present:
                     cursor.execute("SELECT * FROM review WHERE user_id=(%s) and ISBN_number=(%s)",(user_id,ISBN_number,))
@@ -350,7 +351,7 @@ def recommendations():
     if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
         user_id = session('user_id')
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating>3",(user_id)) 
+        cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating>3",(user_id))
         subjects = cursor.fetchone()
         if subjects:
             cursor.execute("SELECT * FROM books WHERE subject=(%s)")
