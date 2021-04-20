@@ -274,3 +274,90 @@ def order_books():
         return render_template('order_books.html',msg=msg)
     msg='please login first'
     return render_template('login.html',msg=msg)
+
+#---------------------------add_to_cart----------------------------------------------------------
+@app.route('/add_to_cart')
+def add_to_cart():
+    msg=''
+    if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
+        if request.method=='GET':
+            return render_template("add_to_cart.html")
+        if request.method=='POST' and 'ISBN_number' in request.form:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            user_id = session['user_id']
+            ISBN_number = request.form['ISBN_number']
+            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number))
+            ISBN_numbers=cursor.fetchone()
+            if ISBN_numbers:
+                cursor.execute("SELECT * FROM add_to_cart WHERE user_id=(%s) and ISBN_number=(%s)",(user_id,ISBN_number,))
+                already_added = cursor.fetchone()
+                if already_added:
+                    msg = "you have alredy added it to the cart"
+                    return render_template("add_to_cart.html",msg=msg)
+                cursor.execute("INSERT INTO add_to_cart VALUES(%s ,%s)",(user_id,ISBN_number,))
+                mysql.connection.commit()
+                msg='successfully added to cart'
+                return render_template("add_to_cart.html",msg=msg)
+            msg="please use valid isbn number"
+            return render_template("add_to_cart.html",msg=msg)
+        msg='First,fill out isbn number'
+        return render_template('add_to_cart.html',msg=msg)
+    msg='please login first'
+    return render_template('login.html',msg=msg)
+
+#----------------------------review------------------------
+@app.route('/review')
+def review():
+    msg=''
+    if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
+        if request.method=='GET':
+            return render_template("review.html")
+        if request.method=='POST' and 'ISBN_number' in request.form and 'rating' in request.form and 'discription' in request.form:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            user_id = session['user_id']
+            ISBN_number = request.form['ISBN_number']
+            rating = request.form['rating']
+            discription = request.form['discription']
+            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number))
+            ISBN_numbers=cursor.fetchone()
+            if ISBN_numbers:
+                on_hold='on_hold'
+                cursor.execute("SELECT * FROM order_books WHERE user_id=(%s) AND ISBN_number=(%s) AND status<>(%s)",(user_id,ISBN_number,on_hold,))
+                present = cursor.fetchone()
+                if present:
+                    cursor.execute("SELECT * FROM review WHERE user_id=(%s) and ISBN_number=(%s)",(user_id,ISBN_number,))
+                    already_added = cursor.fetchone()
+                    if already_added:
+                        msg="you have alredy reviewed this book"
+                        return render_template("review.html",msg=msg)
+                    cursor.execute("INSERT INTO VALUES(%s ,%s, %s, %s)",(user_id,ISBN_number,rating,discription,))
+                    mysql.connection.commit()
+                    msg='review recorded succesfully'
+                    return render_template("review.html",msg=msg)
+                msg = 'you havent read that book yet!'
+                return render_template("review.html",msg=msg)
+            msg="please use valid isbn number"
+            return render_template("review.html",msg=msg)
+        msg='First,fill out complete form'
+        return render_template('review.html',msg=msg)
+    msg='please login first'
+    return render_template('login.html',msg=msg)
+
+#------------------------------recommendations--------------
+@app.route('/recommendations')
+def recommendations():
+    msg=''
+    if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
+        user_id = session('user_id')
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating>3",(user_id)) 
+        subjects = cursor.fetchone()
+        if subjects:
+            cursor.execute("SELECT * FROM books WHERE subject=(%s)")
+            recommended_books = cursor.fectchall()
+            msg = 'these are ur recommendations and good reviewed books'
+            return render_template('recommendations.html',msg=msg,recommended_books = recommended_books)
+        msg="no recommendations till data"
+        return render_template('recommendations.html',msg = msg)
+    msg='please login first'
+    return render_template('login.html',msg=msg)
