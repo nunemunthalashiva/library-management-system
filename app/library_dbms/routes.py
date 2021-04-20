@@ -254,7 +254,7 @@ def order_books():
             due_date = date.today()
             if (str(session['user_id'])[0])==1:
                 due_date = date_booked + timedelta(days=+10)
-             else:
+            else:
                 due_date = date_booked + timedelta(days=+1000000000)
             cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
             ISBN_numbers=cursor.fetchone()
