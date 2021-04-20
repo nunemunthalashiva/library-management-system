@@ -237,3 +237,40 @@ def booksplace():
         return render_template('addbooks.html',msg=msg)
     msg="Sorry librarian not logged in"
     return render_template('login.html',msg=msg)
+
+#-----------order_books---------
+@app.route('/order_books')
+def order_books():
+    msg=''
+    if 'user_id' in session and (str(session['user_id'])[0] == 1 or str(session['user_id'])[0]== 2):
+        if request.method=='GET':
+            return render_template("order_books.html",msg=msg)
+        if request.method=='POST' and 'ISBN_number' in request.form and 'status' in request.form :
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            user_id = session['user_id']
+            ISBN_number = request.form['ISBN_number']
+            status = request.form['status']
+            date_booked = date.today()
+            due_date = date.today()
+            if (str(session['user_id'])[0])==1:
+                due_date = date_booked + timedelta(days=+10)
+             else:
+                due_date = date_booked + timedelta(days=+1000000000)
+            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
+            ISBN_numbers=cursor.fetchone()
+            if ISBN_numbers:
+                cursor.execute("select ((select copy_number from books where ISBN_number=(%s))-(select count(*) from order_books where status_of_book<>(%s) and ISBN_number=(%s))) as Difference"),(ISBN_number,'on_shelf',ISBN_number,))
+                avaliable_books = cursor.fetchone()
+                if avaliable_books>=1:
+                    cursor.execute("INSERT INTO order_books VALUES(%s,%s,%s,%s,%s)",(user_id,ISBN_number,status,date_booked,due_date,))
+                    mysql.connection.commit()
+                    msg='ordered successfully'
+                    return render_template('order_books.html',msg=msg)
+                msg='this book is not available'
+                return render_template('order_books.html',msg=msg)
+            msg='invalid isbn number'
+            return render_template('order_books.html',msg=msg)
+        msg='please fillout form completely'
+        return render_template('order_books.html',msg=msg)
+    msg='please login first'
+    return render_template('login.html',msg=msg)
