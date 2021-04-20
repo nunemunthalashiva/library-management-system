@@ -216,22 +216,22 @@ def addbooks():
 @app.route("/booksplace",methods=['GET','POST'])
 def booksplace():
     msg=''
-    if session['loggedin'] ==True and str(session['user_id'])[0]=='2':
+    if 'user_id' in session and str(session['user_id'])[0]=='3':
         if request.method=='POST' and 'shelf_id' in request.form and'ISBN_number' in request.form and 'book_quantity' in request.form:
             conn=mysql.connect
             cursor=conn.cursor()
             shelf_id = request.form['shelf_id']
             ISBN_number = request.form['ISBN_number']
             book_quantity = request.form['book_quantity']
-            cursor.execute('SELECT SUM(book_quantity) FROM books_place where shelf_id = %s ',(ISBN_number,))
+            cursor.execute('SELECT * FROM books_place where shelf_id = %s ',(shelf_id,))
             auth=cursor.fetchone()
             if auth:
-                cursor.execute('UPDATE books SET copy_number = %s where ISBN_number = %s',(copy_number,ISBN_number))
+                cursor.execute('UPDATE books_place SET book_quantity = %s where ISBN_number = %s and shelf_id = %s ',(book_quantity,ISBN_number,shelf_id))
                 conn.commit()
                 msg='successfully updated quantity of books'
             else:
                 msg='sorry this ISBN_number or shelf id doesnt seem to exists please add ISBN first'
-                return render_template('addauthor.html',msg=msg)
+                return render_template('booksplace.html',msg=msg)
             return render_template('librarian_home.html',msg=msg)
         msg="Sorry please try again"
         return render_template('addbooks.html',msg=msg)
