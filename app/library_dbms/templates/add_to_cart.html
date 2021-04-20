@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> add_to_shelf</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body  style="background-image:url('../static/hospit.jpg')">
+      <br><br><br>
+        <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>add_to_shelf</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
+              <form action="{{ url_for('add_to_cart')}}" method="post" autocomplete="off"><br>
+            <div class="msg">{{ msg }}</div>
+            <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="mail_id" required><br><br>
+            <input type="submit" class="btn" value="add">
+              </form>
+              <br>
+              <br>
+
+            </div>
+        </div>
+    </body>
+</html>
