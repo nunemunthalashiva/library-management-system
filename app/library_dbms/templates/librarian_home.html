@@ -8,7 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <title>user_home_page</title>
-    
+
 </head>
 <body>
     <body>
@@ -17,12 +17,10 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-          
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="{{url_for('login')}}">Home <span class="sr-only">(current)</span></a>
-                </li>
+
                 <li class="nav-item active">
                   <a class="nav-link" href="#">about us</a>
                 </li>
@@ -61,7 +59,7 @@
                       MY profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="{{url_for('display')}}">display</a>
+                      <a class="dropdown-item" href="{{url_for('userdisplay')}}">display</a>
                       <a class="dropdown-item" href="{{url_for('update')}}">Update</a>
                     </div>
                   </li>
@@ -78,31 +76,31 @@
               </form>
             </div>
           </nav>
-          
+
           <!DOCTYPE html>
         <html lang="en">
         <head>
             <title>Carousel</title>
-            
+
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+
             <!--<link rel="stylesheet" href=
         "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-            
+
             <script src=
         "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
             </script>
-            
+
             <script src=
         "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
             </script>
-            
+
             <script src=
         "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
             </script>
         -->
-            
+
             <style>
                 /* Set the image size */
                 .carousel-inner img {
@@ -114,48 +112,48 @@
             }
             </style>
         </head>
-        
+
         <body>
             <div id="GFG" class="carousel slide" data-ride="carousel">
-            
+
             <!-- Indicators -->
             <ul class="carousel-indicators">
                 <li data-target="#GFG" data-slide-to="0" class="active"></li>
                 <li data-target="#GFG" data-slide-to="1"></li>
                 <li data-target="#GFG" data-slide-to="2"></li>
             </ul>
-            
+
             <!-- The slideshow -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img src=
         "../static/3.jpg"
                     alt="GFG" width="600" height="400">
-                    
+
                     <div class="carousel-caption">
                         <h3 class="text-warning">
                             GeeksforGeeks: Interview Preparation Caption
                         </h3>
                     </div>
                 </div>
-                
+
                 <div class="carousel-item">
                     <img src=
         "../static/1.jpg"
                     alt="GFG" width="600" height="400">
-                    
+
                     <div class="carousel-caption">
                         <h3 class="text-warning">
                             GeeksforGeeks: Geeks Classes Caption
                         </h3>
                     </div>
                 </div>
-                
+
                 <div class="carousel-item">
                     <img src=
         "../static/2.jpg"
                     alt="GFG" width="600" height="400">
-                    
+
                     <div class="carousel-caption">
                         <h3 class="text-warning">
                             GeeksforGeeks: Geeks Classes Caption
@@ -163,7 +161,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <a class="carousel-control-prev" href="#GFG" data-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </a>
@@ -171,8 +169,8 @@
                 <span class="carousel-control-next-icon"></span>
             </a>
             </div>
-            
-        
+
+
         <!-- Footer -->
         <footer class="bg-dark text-center text-white">
           <!-- Grid container -->
@@ -183,34 +181,34 @@
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
                 ><i class="fab fa-facebook-f"></i
               ></a>
-        
+
               <!-- Twitter -->
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
                 ><i class="fab fa-twitter"></i
               ></a>
-        
+
               <!-- Google -->
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
                 ><i class="fab fa-google"></i
               ></a>
-        
+
               <!-- Instagram -->
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
                 ><i class="fab fa-instagram"></i
               ></a>
-        
+
               <!-- Linkedin -->
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
                 ><i class="fab fa-linkedin-in"></i
               ></a>
-        
+
               <!-- Github -->
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
                 ><i class="fab fa-github"></i
               ></a>
             </section>
             <!-- Section: Social media -->
-        
+
             <!-- Section: Form -->
             <section class="">
               <form action="">
@@ -223,7 +221,7 @@
                     </p>
                   </div>
                   <!--Grid column-->
-        
+
                   <!--Grid column-->
                   <div class="col-md-5 col-12">
                     <!-- Email input -->
@@ -233,7 +231,7 @@
                     </div>
                   </div>
                   <!--Grid column-->
-        
+
                   <!--Grid column-->
                   <div class="col-auto">
                     <!-- Submit button -->
@@ -247,7 +245,7 @@
               </form>
             </section>
             <!-- Section: Form -->
-        
+
             <!-- Section: Text -->
             <section class="mb-4">
               <p>
@@ -257,7 +255,7 @@
               </p>
             </section>
             <!-- Section: Text -->
-        
+
             <!-- Section: Links -->
             <section class="">
               <!--Grid row-->
@@ -265,7 +263,7 @@
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                   <h5 class="text-uppercase">Links</h5>
-        
+
                   <ul class="list-unstyled mb-0">
                     <li>
                       <a href="#!" class="">IIT-INDORE</a>
@@ -282,11 +280,11 @@
                   </ul>
                 </div>
                 <!--Grid column-->
-        
+
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                   <h5 class="text-uppercase">Links</h5>
-        
+
                   <ul class="list-unstyled mb-0">
                     <li>
                       <a href="#!" class="text-white">Link 1</a>
@@ -303,11 +301,11 @@
                   </ul>
                 </div>
                 <!--Grid column-->
-        
+
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                   <h5 class="text-uppercase">Links</h5>
-        
+
                   <ul class="list-unstyled mb-0">
                     <li>
                       <a href="#!" class="text-white">Link 1</a>
@@ -324,11 +322,11 @@
                   </ul>
                 </div>
                 <!--Grid column-->
-        
+
                 <!--Grid column-->
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                   <h5 class="text-uppercase">Links</h5>
-        
+
                   <ul class="list-unstyled mb-0">
                     <li>
                       <a href="#!" class="text-white">Link 1</a>
@@ -351,7 +349,7 @@
             <!-- Section: Links -->
           </div>
           <!-- Grid container -->
-        
+
           <!-- Copyright -->
           <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © 2020 Copyright:

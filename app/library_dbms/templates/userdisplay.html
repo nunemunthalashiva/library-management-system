@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    { % block content % }
+      {{ user['user_id']}}
+      {{ user['name'] }}
+      {{ user['address']}}
+      {{ user['unpaid_fees']}}
+    { % end content %}
+  </body>
+</html>

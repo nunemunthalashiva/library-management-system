@@ -50,6 +50,13 @@ def librarian_home():
 @app.route("/login",methods=['GET','POST'])
 def login():
     msg=''
+    if 'user_id' in session:
+        if str(session['user_id'])[0] == '1':
+            return redirect(url_for('student_home'))
+        elif str(session['user_id'])[0] == '2':
+            return redirect(url_for('teacher_home'))
+        else:
+            return redirect(url_for('librarian_home'))
     if request.method=='GET':
         return render_template('login.html')
     if request.method=='POST' and 'user_id' in request.form and 'password' in request.form :
@@ -70,13 +77,48 @@ def login():
                 return redirect(url_for('librarian_home'))
             else:
                 msg='Invalid Username!'
-                return render_template('index.html',msg=msg)
+                return render_template('login.html',msg=msg)
         else:
             msg="Invalid username / password"
-            return render_template('index.html',msg=msg)
+            return render_template('login.html',msg=msg)
     msg='Please fill all details'
     return render_template('login.html',msg=msg)
 
+
+# ------------------------------------------------------------
+
+@app.route("/userdisplay")
+def userdisplay():
+    if 'user_id' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM user WHERE user_id = % s', (session['user_id'], ))
+        user = cursor.fetchone()
+        return render_template("userdisplay.html", user = user)
+    return redirect(url_for('login'))
+
+# --------------------------------------------------------------
+
+@app.route("/update", methods =['GET', 'POST'])
+def update():
+    msg = ''
+    if 'user_id' in session:
+        if request.method == 'POST' and 'password' and 'address' in request.form:
+            conn=mysql.connect
+            cursor=conn.cursor()
+            password = request.form['password']
+            address = request.form['address']
+            cursor.execute('SELECT * FROM user WHERE user_id = % s', (session['user_id'], ))
+            user1 = cursor.fetchone()
+            if not user1:
+                msg = 'Account already exists !'
+            else:
+                cursor.execute('UPDATE user SET password = % s, address = % s  WHERE user_id = % s', (password, address, (session['user_id'], ), ))
+                conn.commit()
+                msg = 'You have successfully updated !'
+        elif request.method == 'POST':
+            msg = 'Please fill out the form !'
+        return render_template("update.html", msg = msg)
+    return redirect(url_for('login'))
 
 # ------------------------------------------------------------
 
@@ -90,83 +132,86 @@ def logout():
 @app.route('/adduser',methods=['GET','POST'])
 def adduser():
     msg=''
-    if request.method == 'GET':
-        return render_template('adduser.html')
-    if request.method=='POST' and 'user_id' in request.form and 'password' in request.form and 'address' in request.form and 'name' in request.form:
-        conn=mysql.connect
-        cursor=conn.cursor()
-        user_id = request.form['user_id']
-        name=request.form['name']
-        password = request.form['password']
-        address = request.form['address']
-        unpaid_fees=0
-        cursor.execute('SELECT * FROM user where user_id = {}'.format(user_id))
-        person = cursor.fetchone()
-        if person:
-            msg='sorry this user exists already'
-        else:
-            cursor.execute('INSERT INTO user values (%s,%s,%s,%s,%s)',(user_id,password,name,address,unpaid_fees))
-            conn.commit()
-            msg='Successfully added user'
+    if 'user_id' in session and str(session['user_id'])[0]==3:
+        if request.method == 'GET':
+            return render_template('adduser.html')
+        if request.method=='POST' and 'user_id' in request.form and 'password' in request.form and 'address' in request.form and 'name' in request.form:
+            conn=mysql.connect
+            cursor=conn.cursor()
+            user_id = request.form['user_id']
+            name=request.form['name']
+            password = request.form['password']
+            address = request.form['address']
+            unpaid_fees=0
+            cursor.execute('SELECT * FROM user where user_id = {}'.format(user_id))
+            person = cursor.fetchone()
+            if person:
+                msg='sorry this user exists already'
+            else:
+                cursor.execute('INSERT INTO user values (%s,%s,%s,%s,%s)',(user_id,password,name,address,unpaid_fees))
+                conn.commit()
+                msg='Successfully added user'
             return render_template('librarian_home.html',msg=msg)
         return render_template('adduser.html',msg=msg)
-    msg='Please try again'
-    return render_template('librarian_home.html',msg=msg)
+    msg='Sorry librarian not logged in'
+    return render_template('login.html',msg=msg)
 
 
 # add author
 @app.route('/addauthor',methods=['GET','POST'])
 def addauthor():
     msg=''
-    if request.method=='GET':
-        return render_template('addauthor.html')
-    if request.method=='POST' and 'ISBN_number' in request.form and 'name' in request.form:
-        conn=mysql.connect
-        cursor=conn.cursor()
-        ISBN_number = request.form['ISBN_number']
-        name = request.form['name']
-        cursor.execute('SELECT * FROM author where ISBN_number = %s and name = %s',(ISBN_number,name))
-        auth = cursor.fetchone()
-        if auth:
-            msg='sorry this author and ISBN_number exists already'
-        else:
-            cursor.execute('INSERT INTO author values (%s,%s)',(ISBN_number,name))
-            conn.commit()
-            msg='Successfully added author and corresponding book'
+    if 'user_id' in session and str(session['user_id'])[0]==3:
+        if request.method=='GET':
+            return render_template('addauthor.html')
+        if request.method=='POST' and 'ISBN_number' in request.form and 'name' in request.form:
+            conn=mysql.connect
+            cursor=conn.cursor()
+            ISBN_number = request.form['ISBN_number']
+            name = request.form['name']
+            cursor.execute('SELECT * FROM author where ISBN_number = %s and name = %s',(ISBN_number,name))
+            auth = cursor.fetchone()
+            if auth:
+                msg='sorry this author and ISBN_number exists already'
+            else:
+                cursor.execute('INSERT INTO author values (%s,%s)',(ISBN_number,name))
+                conn.commit()
+                msg='Successfully added author and corresponding book'
             return render_template('librarian_home.html',msg=msg)
         return render_template('addauthor.html',msg=msg)
-    msg='please try again'
-    return render_template('librarian_home.html',msg=msg)
+    msg='librarian not logged in'
+    return render_template('login.html',msg=msg)
 
 
 @app.route("/addbooks",methods=['GET','POST'])
 
 def addbooks():
     msg=''
-    if request.method=='GET':
-        return render_template('addbooks.html')
-    if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form and 'publication_year' in request.form and 'subject' in request.form and 'title' in request.form:
-        conn=mysql.connect
-        cursor=conn.cursor()
-        title = request.form['title']
-        subject = request.form['subject']
-        ISBN_number = request.form['ISBN_number']
-        publication_year = request.form['publication_year']
-        copy_number = request.form['copy_number']
-        cursor.execute('SELECT * FROM books where ISBN_number = %s ',(ISBN_number,))
-        auth=cursor.fetchone()
-        if auth:
-            cursor.execute('UPDATE books SET copy_number = %s where ISBN_number = %s',(copy_number,ISBN_number,))
-            conn.commit()
-            msg='successfully updated quantity of books'
-        else:
-            cursor.execute('INSERT INTO books values (%s,%s,%s,%s,%s)',(title,publication_year,copy_number,subject,ISBN_number,))
-            conn.commit()
-            msg='Successfully added books'
+    if 'user_id' in session and str(session['user_id'])[0]==3:
+        if request.method=='GET':
+            return render_template('addbooks.html')
+        if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form and 'publication_year' in request.form and 'subject' in request.form and 'title' in request.form:
+            conn=mysql.connect
+            cursor=conn.cursor()
+            title = request.form['title']
+            subject = request.form['subject']
+            ISBN_number = request.form['ISBN_number']
+            publication_year = request.form['publication_year']
+            copy_number = request.form['copy_number']
+            cursor.execute('SELECT * FROM books where ISBN_number = %s ',(ISBN_number,))
+            auth=cursor.fetchone()
+            if auth:
+                cursor.execute('UPDATE books SET copy_number = %s where ISBN_number = %s',(copy_number,ISBN_number,))
+                conn.commit()
+                msg='successfully updated quantity of books'
+            else:
+                cursor.execute('INSERT INTO books values (%s,%s,%s,%s,%s)',(title,publication_year,copy_number,subject,ISBN_number,))
+                conn.commit()
+                msg='Successfully added books'
             return render_template('addbooks.html',msg=msg)
         return render_template('librarian_home.html',msg=msg)
-    msg="Sorry please try again"
-    return render_template('addbooks.html',msg=msg)
+    msg="Sorry librarian not logged in"
+    return render_template('login.html',msg=msg)
 
 @app.route("/booksplace",methods=['GET','POST'])
 def booksplace():
