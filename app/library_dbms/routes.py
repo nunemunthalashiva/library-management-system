@@ -259,7 +259,7 @@ def order_books():
             cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
             ISBN_numbers=cursor.fetchone()
             if ISBN_numbers:
-                cursor.execute("select ((select copy_number from books where ISBN_number=(%s))-(select count(*) from order_books where status_of_book<>(%s) and ISBN_number=(%s))) as Difference"),(ISBN_number,'on_shelf',ISBN_number,))
+                cursor.execute(("select ((select copy_number from books where ISBN_number=(%s))-(select count(*) from order_books where status_of_book<>(%s) and ISBN_number=(%s))) as Difference"),(ISBN_number,'on_shelf',ISBN_number,))
                 avaliable_books = cursor.fetchone()
                 if avaliable_books>=1:
                     cursor.execute("INSERT INTO order_books VALUES(%s,%s,%s,%s,%s)",(user_id,ISBN_number,status,date_booked,due_date,))
