@@ -132,7 +132,7 @@ def logout():
 @app.route('/adduser',methods=['GET','POST'])
 def adduser():
     msg=''
-    if 'user_id' in session and str(session['user_id'])[0]==3:
+    if 'user_id' in session and str(session['user_id'])[0]=='3':
         if request.method == 'GET':
             return render_template('adduser.html')
         if request.method=='POST' and 'user_id' in request.form and 'password' in request.form and 'address' in request.form and 'name' in request.form:
@@ -161,7 +161,7 @@ def adduser():
 @app.route('/addauthor',methods=['GET','POST'])
 def addauthor():
     msg=''
-    if 'user_id' in session and str(session['user_id'])[0]==3:
+    if 'user_id' in session and str(session['user_id'])[0]=='3':
         if request.method=='GET':
             return render_template('addauthor.html')
         if request.method=='POST' and 'ISBN_number' in request.form and 'name' in request.form:
@@ -187,7 +187,7 @@ def addauthor():
 
 def addbooks():
     msg=''
-    if 'user_id' in session and str(session['user_id'])[0]==3:
+    if 'user_id' in session and str(session['user_id'])[0]=='3':
         if request.method=='GET':
             return render_template('addbooks.html')
         if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form and 'publication_year' in request.form and 'subject' in request.form and 'title' in request.form:
