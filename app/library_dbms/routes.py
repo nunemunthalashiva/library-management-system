@@ -4,6 +4,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
 # returning index page when someone just opens website
+
 @app.route('/')
 @app.route("/index")
 def index():
@@ -77,7 +78,7 @@ def login():
     return render_template('login.html',msg=msg)
 
 
-
+# ------------------------------------------------------------
 
 @app.route('/logout')
 def logout():
@@ -144,7 +145,7 @@ def addbooks():
     msg=''
     if request.method=='GET':
         return render_template('addbooks.html')
-    if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form and 'publication_year' in request.form and 'subject' in request.form and 'tile' in request.form:
+    if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form and 'publication_year' in request.form and 'subject' in request.form and 'title' in request.form:
         conn=mysql.connect
         cursor=conn.cursor()
         title = request.form['title']
@@ -155,17 +156,17 @@ def addbooks():
         cursor.execute('SELECT * FROM books where ISBN_number = %s ',(ISBN_number,))
         auth=cursor.fetchone()
         if auth:
-            cursor.execute('UPDATE books SET copy_number = %s where ISBN_number = %s',(copy_number,ISBN_number))
+            cursor.execute('UPDATE books SET copy_number = %s where ISBN_number = %s',(copy_number,ISBN_number,))
             conn.commit()
             msg='successfully updated quantity of books'
         else:
-            cursor.execute('INSERT INTO books values (%s,%s,%d,%s)',(title,publication_year,copy_number,subject))
+            cursor.execute('INSERT INTO books values (%s,%s,%s,%s,%s)',(title,publication_year,copy_number,subject,ISBN_number,))
+            conn.commit()
             msg='Successfully added books'
             return render_template('addbooks.html',msg=msg)
         return render_template('librarian_home.html',msg=msg)
     msg="Sorry please try again"
     return render_template('addbooks.html',msg=msg)
-
 
 @app.route("/booksplace",methods=['GET','POST'])
 def booksplace():
