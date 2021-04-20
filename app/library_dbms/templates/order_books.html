@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> order_books</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body  style="background-image:url('../static/hospit.jpg')">
+      <br><br><br>
+        <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>Order_books</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
+              <form action="{{ url_for('login')}}" method="post" autocomplete="off"><br>
+            <div class="msg">{{ msg }}</div>
+            <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="mail_id" required><br><br>
+            <input type="text" name="status" placeholder="Enter status" class="textbox" id="passwd" required><br>
+            <input type="date" name="date_booked" placeholder="Enter todays date" class="textbox" id="passwd" required><br><br>
+            <input type="submit" class="btn" value="order">
+              </form>
+              <br>
+              <br>
+              <!--<p class="worddark">New to this page? <a class="worddark" href="{{ url_for('register')}}">Register here</a></p>-->
+            </div>
+        </div>
+    </body>
+</html>
