@@ -3,11 +3,17 @@
         <title>display</title>
         <link rel="stylesheet" href="../static/style.css">
     </head>
-    <div class="loginbottom">
+            <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>check reviews</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
         <form action="{{ url_for('check_review')}}" method="post" autocomplete="off"><br>
       <div class="msg">{{ msg }}</div>
       <input type="text" name="ISBN_number" placeholder="Enter isbn of book for reviews" class="textbox" id="mail_id" required><br><br>
-
       <input type="submit" class="btn" value="reviews">
+            <br>
+              <br>
         </form>
         <br>
