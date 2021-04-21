@@ -1,0 +1,40 @@
+<html lang="en">
+    <head>
+        <title>check_my_shelf</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+<body style="background-image:url('../static/hospit.jpg')">
+    <div class="one">
+        <div class="content" align="center">  <br>
+            <div class="contentbar">
+                <h1>Your Details</h1>    <br>
+                 {% block content %}
+                    <div class="border">
+                        <table class="worddark"><br>
+                            {{%for review in reviews%}}
+                            <tr>
+                                <td><h2>ISBN number:  </h2></td>
+                                <td><h2>{{ review['user_id'] }}</h2></td>
+                            </tr>
+                            <tr>
+                                <td><h2>title:  </h2></td>
+                                <td><h2>{{ review['ISBN_number'] }}</h2></td>
+                            </tr>
+                            <tr>
+                                <td><h2>publication_year:  </h2></td>
+                                <td><h2>{{ review['rating'] }}</h2></td>
+                            </tr>
+                            <tr>
+                                <td><h2>subject:  </h2></td>
+                                <td><h2>{{ review['description'] }}</h2></td>
+                            </tr>
+                            {{%end for}}
+
+                        </table>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<html lang="en">
+    <head>
+        <title>display</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <div class="loginbottom">
+        <form action="{{ url_for('check_review_2')}}" method="post" autocomplete="off"><br>
+      <div class="msg">{{ msg }}</div>
+      <input type="text" name="ISBN_number" placeholder="Enter isbn of book for reviews" class="textbox" id="mail_id" required><br><br>
+
+      <input type="submit" class="btn" value="reviews">
+        </form>
+        <br>
