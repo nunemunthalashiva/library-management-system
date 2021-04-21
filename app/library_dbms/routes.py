@@ -193,6 +193,7 @@ def addbooks():
         if request.method=='POST' and 'ISBN_number' in request.form and 'copy_number' in request.form and 'publication_year' in request.form and 'subject' in request.form and 'title' in request.form:
             conn=mysql.connect
             cursor=conn.cursor()
+            cursor1 = conn.cursor()
             title = request.form['title']
             subject = request.form['subject']
             ISBN_number = request.form['ISBN_number']
@@ -205,9 +206,15 @@ def addbooks():
                 conn.commit()
                 msg='successfully updated quantity of books'
             else:
-                cursor.execute('INSERT INTO books values (%s,%s,%s,%s,%s)',(title,publication_year,copy_number,subject,ISBN_number,))
-                conn.commit()
-                msg='Successfully added books'
+                cursor1.execute('SELECT * from author where ISBN_number= %s',(ISBN_number,))
+                valid = cursor1.fetchone()
+                if valid:
+                    cursor.execute('INSERT INTO books values (%s,%s,%s,%s,%s)',(title,publication_year,copy_number,subject,ISBN_number,))
+                    conn.commit()
+                    msg='Successfully added books'
+                else:
+                    msg="Sorry first please add book inauthor"
+                    return render_template("addauthor.html",msg=msg)
             return render_template('addbooks.html',msg=msg)
         return render_template('librarian_home.html',msg=msg)
     msg="Sorry librarian not logged in"
@@ -331,7 +338,7 @@ def review():
                     if already_added:
                         msg="you have alredy reviewed this book"
                         return render_template("review.html",msg=msg)
-                    cursor.execute("INSERT INTO VALUES(%s ,%s, %s, %s)",(user_id,ISBN_number,rating,discription,))
+                    cursor.execute("INSERT INTO review VALUES(%s ,%s, %s, %s)",(user_id,ISBN_number,rating,discription,))
                     mysql.connection.commit()
                     msg='review recorded succesfully'
                     return render_template("review.html",msg=msg)
@@ -351,14 +358,15 @@ def recommendations():
     if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
         user_id = session['user_id']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating>3",(user_id))
+        cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating > %s",(user_id,3,))
         subjects = cursor.fetchone()
         if subjects:
-            cursor.execute("SELECT * FROM books WHERE subject=(%s)")
-            recommended_books = cursor.fectchall()
-            msg = 'these are ur recommendations and good reviewed books'
-            return render_template('recommendations.html',msg=msg,recommended_books = recommended_books)
-        msg="no recommendations till data"
+            cursor.execute("SELECT * FROM books WHERE subject= (%s)",(subjects,))
+            recommended_books = cursor.fetchall()
+            if recommended_books:
+                msg = 'these are ur recommendations and good reviewed books'
+                return render_template('recommendations.html',msg=msg,recommended_books = recommended_books)
+        msg="no recommendations till date"
         return render_template('recommendations.html',msg = msg)
     msg='please login first'
     return render_template('login.html',msg=msg)
@@ -378,7 +386,7 @@ def check_shelf():
             msg = "these are all your saved books"
             return render_template('check_shelf.html',books=books,msg = msg)
         msg = 'no books saved to your cart yet'
-        return render_template('check_shelf',msg=msg)
+        return render_template('check_shelf.html',msg=msg)
     msg = 'please login first'
     return render_template('login.html',msg=msg)
 
@@ -388,6 +396,7 @@ def check_shelf():
 
 @app.route('/check_review',methods=['GET','POST'])
 def check_review():
+    msg=''
     if 'user_id' in session and str(session['user_id'])[0]!='3':
         if request.method == 'GET':
             return render_template("check_review.html")
@@ -406,4 +415,4 @@ def check_review():
         msg = 'please enter isbn number'
         return render_template("check_review.html",msg=msg)
     msg = "please login first"
-    return render_template("login.html")
+    return render_template("login.html",msg=msg)

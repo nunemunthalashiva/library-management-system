@@ -3,15 +3,16 @@
         <title>check_my_shelf</title>
         <link rel="stylesheet" href="../static/style.css">
     </head>
-<body style="background-image:url('../static/hospit.jpg')">
+<body>
     <div class="one">
         <div class="content" align="center">  <br>
             <div class="contentbar">
                 <h1>Your Details</h1>    <br>
+                {{ msg }}
                  {% block content %}
                     <div class="border">
                         <table class="worddark"><br>
-                            {% for recommended_book in recommended_books %} 
+                            {% for recommended_book in recommended_books %}
                             <tr>
                                 <td><h2>ISBN number:  </h2></td>
                                 <td><h2>{{ recommended_book['title'] }}</h2></td>
