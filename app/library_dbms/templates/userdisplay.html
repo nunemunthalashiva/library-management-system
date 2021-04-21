@@ -5,11 +5,66 @@
     <title></title>
   </head>
   <body>
-    { % block content % }
-      {{ user['user_id']}}
-      {{ user['name'] }}
-      {{ user['address']}}
-      {{ user['unpaid_fees']}}
-    { % end content %}
-  </body>
+    <html lang="en">
+    <head>
+        <title>display</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body style="background-image:url('../static/hospit.jpg')">
+        <div class="one">
+            <div class="content" align="center">  <br>
+                <div class="contentbar">
+                    <h1>Your Details</h1>    <br>
+                     {% block content %}
+                        <div class="border">
+                            <table class="worddark"><br>
+
+                                <tr>
+                                  <td> </td>
+                                </tr>
+                                <tr>
+                                    <td><h2>Email ID:   </h2></td>
+
+                                    <td><h2>{{ user['user_id']}}</h2></td>
+                                </tr>
+                                <tr><td></td></tr>
+                                <tr>
+                                  <td> </td>
+                                </tr>
+                                <tr>
+                                    <td><h2>Name:   </h2></td>
+                                    <td><h2>{{ user['address']}}</h2></td>
+                                </tr>
+                                <tr><td></td></tr>
+                                <tr>
+                                  <td> </td>
+                                </tr>
+                                <tr>
+                                    <td><h2>age:   </h2></td>
+                                    <td><h2>{{ user['name'] }}</h2></td>
+                                </tr>
+                                <tr>
+                                  <td> </td>
+                                </tr>
+                                <tr><td></td></tr>
+                                <tr>
+                                    <td><h2>Blood Group:   </h2></td>
+                                    <td><h2>{{ user['unpaid_fees']}}</h2></td>
+                                </tr>
+                                <tr>
+                                  <td> </td>
+                                </tr>
+                                <tr><td></td></tr>
+                             
+                                <tr>
+                                  <td> </td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
+
