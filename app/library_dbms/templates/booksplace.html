@@ -5,13 +5,20 @@
     <title></title>
   </head>
   <body>
+      <br><br><br>
+        <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>allocate shelf</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
     <form action="{{ url_for('booksplace') }}" method="post">
       <div> {{msg}}</div>
-        <input type="number" name="shelf_id" placeholder="Enter shelf id" class="textbox" id="shelf id" required><br><br>
-      <input type="text" name="ISBN_number" placeholder="Enter ISBN number" class="textbox" id="ISBN_number" required><br><br>
-      <input type="number" name="book_quantity" placeholder="Enter number of books " class="textbox" id="book_quantity" required><br><br>
+        <input type="number" name="shelf_id" placeholder="Enter shelf id" class="textbox" id="mail_id" required><br><br>
+      <input type="text" name="ISBN_number" placeholder="Enter ISBN number" class="textbox" id="mail_id" required><br><br>
+      <input type="number" name="book_quantity" placeholder="Enter number of books " class="textbox" id="mail_id" required><br><br>
 
-      <input type="submit" value="Update">
+      <input type="submit" class="btn" value="Update">
     </form>
   </body>
 </html>
