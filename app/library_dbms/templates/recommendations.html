@@ -11,7 +11,7 @@
                  {% block content %}
                     <div class="border">
                         <table class="worddark"><br>
-                            {{%for recommended_book in recommended_books%}}
+                            {% for recommended_book in recommended_books %} 
                             <tr>
                                 <td><h2>ISBN number:  </h2></td>
                                 <td><h2>{{ recommended_book['title'] }}</h2></td>
@@ -24,7 +24,7 @@
                                 <td><h2>publication_year:  </h2></td>
                                 <td><h2>{{ recommended_book['subject'] }}</h2></td>
                             </tr>
-                            {{%end for}}
+                            {% endfor %}
 
                         </table>
                     </div>
