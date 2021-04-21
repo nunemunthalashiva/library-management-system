@@ -349,7 +349,7 @@ def review():
 def recommendations():
     msg=''
     if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
-        user_id = session('user_id')
+        user_id = session['user_id']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating>3",(user_id))
         subjects = cursor.fetchone()
@@ -370,12 +370,13 @@ def recommendations():
 def check_shelf():
     msg = ''
     if 'user_id' in session and str(session['user_id'])[0]!='3':
+        user_id = session['user_id']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute("SELECT * FROM books WHERE ISBN_number IN (SELECT ISBN_number FROM add_to_cart WHERE user_id=(%s))",(user_id,))
         books=cursor.fetchall()
         if books:
             msg = "these are all your saved books"
-            return rander_template('check_shelf.html',books=books,msg = msg)
+            return render_template('check_shelf.html',books=books,msg = msg)
         msg = 'no books saved to your cart yet'
         return render_template('check_shelf',msg=msg)
     msg = 'please login first'
