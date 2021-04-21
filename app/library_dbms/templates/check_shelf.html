@@ -1,0 +1,40 @@
+<html lang="en">
+    <head>
+        <title>display</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+    <body style="background-image:url('../static/hospit.jpg')">
+        <div class="one">
+            <div class="content" align="center">  <br>
+                <div class="contentbar">
+                    <h1>Your Details</h1>    <br>
+                     {% block content %}
+                        <div class="border">
+                            <table class="worddark"><br>
+                                {{%for book in books%}}
+                                <tr>
+                                    <td><h2>ISBN number:  </h2></td>
+                                    <td><h2>{{ book['ISBN_number'] }}</h2></td>
+                                </tr>
+                                <tr>
+                                    <td><h2>title:  </h2></td>
+                                    <td><h2>{{ book['title'] }}</h2></td>
+                                </tr>
+                                <tr>
+                                    <td><h2>publication_year:  </h2></td>
+                                    <td><h2>{{ book['publication_year'] }}</h2></td>
+                                </tr>
+                                <tr>
+                                    <td><h2>subject:  </h2></td>
+                                    <td><h2>{{ book['subject'] }}</h2></td>
+                                </tr>
+                                {{%end for}}
+
+                            </table>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
