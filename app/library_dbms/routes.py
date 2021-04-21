@@ -387,7 +387,7 @@ def check_shelf():
 
 @app.route('/check_review',methods=['GET','POST'])
 def check_review():
-    if 'user_id' in session and str(session['user_id'])[0]!=3:
+    if 'user_id' in session and str(session['user_id'])[0]!='3':
         if request.method == 'GET':
             return render_template("check_review.html")
         if 'ISBN_number' in request.form:
@@ -399,7 +399,7 @@ def check_review():
                 cursor.execute("SELECT * FROM review WHERE ISBN_number= (%s)",(ISBN_number,))
                 reviews = cursor.fetchall()
                 msg = " review of this book sre here"
-                return render_template('check_review',reviews=reviews,msg=msg)
+                return render_template('check_review_2',reviews=reviews,msg=msg)
             msg = 'invalid isbn number/no such books present in library'
             return render_template('check_review',msg=msg)
         msg = 'please enter isbn number'
