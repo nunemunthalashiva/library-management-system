@@ -362,3 +362,47 @@ def recommendations():
         return render_template('recommendations.html',msg = msg)
     msg='please login first'
     return render_template('login.html',msg=msg)
+
+
+#-check_shelf--------------------
+
+@app.route('/check_shelf')
+def check_shelf():
+    msg = ''
+    if 'user_id' in session and str(session['user_id'])[0]!='3':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM books WHERE ISBN_number IN (SELECT ISBN_number FROM add_to_cart WHERE user_id=(%s))",(user_id,))
+        books=cursor.fetchall()
+        if books:
+            msg = "these are all your saved books"
+            return rander_template('check_shelf.html',books=books,msg = msg)
+        msg = 'no books saved to your cart yet'
+        return render_template('check_shelf',msg=msg)
+    msg = 'please login first'
+    return render_template('login.html',msg=msg)
+
+
+
+#-------------check_review-----------
+
+@app.route('/check_review',methods=['GET','POST'])
+def check_review():
+    if 'user_id' in session and str(session['user_id'])[0]!=3:
+        if request.method == 'GET':
+            return render_template("check_review.html")
+        if 'ISBN_number' in request.form:
+            ISBN_number = request.form['ISBN_number']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute("SELECT * FROM books WHERE ISBN_number = (%s)",(ISBN_number,))
+            valid = cursor.fetchone()
+            if valid:
+                cursor.execute("SELECT * FROM review WHERE ISBN_number= (%s)",(ISBN_number,))
+                reviews = cursor.fetchall()
+                msg = " review of this book sre here"
+                return render_template('check_review',reviews=reviews,msg=msg)
+            msg = 'invalid isbn number/no such books present in library'
+            return render_template('check_review',msg=msg)
+        msg = 'please enter isbn number'
+        return render_template("check_review.html",msg=msg)
+    msg = "please login first"
+    return render_template("login.html")
