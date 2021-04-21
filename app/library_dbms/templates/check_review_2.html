@@ -11,7 +11,7 @@
                  {% block content %}
                     <div class="border">
                         <table class="worddark"><br>
-                            {{%for review in reviews%}}
+                            {% for review in reviews %}
                             <tr>
                                 <td><h2>ISBN number:  </h2></td>
                                 <td><h2>{{ review['user_id'] }}</h2></td>
@@ -28,7 +28,7 @@
                                 <td><h2>subject:  </h2></td>
                                 <td><h2>{{ review['description'] }}</h2></td>
                             </tr>
-                            {{%end for}}
+                            {% endfor %}
 
                         </table>
                     </div>
