@@ -41,10 +41,13 @@
         <a class="nav-link" href="http://www.iiti.ac.in/page/contactus">Contact us <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Covid precautions <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public">Covid precautions<span class="sr-only">(current)</span></a>
       </li>
         <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('order_books')}}">Order_Books<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{{ url_for('order_books')}}">Order Books<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('books_gallery')}}">books gallery<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item dropdown active">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,7 +74,7 @@
               my profile
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{{ url_for('display')}}">view profile</a>
+              <a class="dropdown-item" href="{{ url_for('userdisplay')}}">view profile</a>
               <a class="dropdown-item" href="{{ url_for('update')}}">update profile</a>
             </div>
           </li>
@@ -82,6 +85,7 @@
 
     </div>
   </nav>
+   <div class="msg">{{ msg }}</div>
   <html lang="en">
   <head>
   	<title>Carousel</title>
@@ -91,15 +95,12 @@
 
   	<!--<link rel="stylesheet" href=
   "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
   	<script src=
   "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
   	</script>
-
   	<script src=
   "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
   	</script>
-
   	<script src=
   "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
   	</script>
@@ -112,7 +113,7 @@
         height:40vw;
   		}
       body{
-        font-size: 18px;;
+        font-size: 16px;;
       }
   	</style>
   </head>
@@ -160,7 +161,7 @@
 
   			<div class="carousel-caption">
   				<h3 class="text-warning">
-  					GWELOCOME TO IITI LIBRARY
+  					WELOCOME TO IITI LIBRARY
   				</h3>
   			</div>
   		</div>
