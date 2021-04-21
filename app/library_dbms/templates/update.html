@@ -6,11 +6,23 @@
     <title></title>
   </head>
   <body>
+          <br><br><br>
+        <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>Login</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
     <form action="{{ url_for('update') }}" method="post">
       <div class="msg">{{ msg }}</div>
-       <input type="password" name="password" placeholder="Enter new password" class="textbox" id="password" required><br></br>
+       <input type="password" name="password" placeholder="Enter new password" class="textbox" id="passwd" required><br></br>
         <input type="address" name="address" placeholder="Enter Your address" class="textbox" id="mail_id" required><br></br>
-        <input type = "submit" value ="update">
+        <input type = "submit" class="btn" value ="update">
     </form>
+     <br>
+            <br>
+    
+           </div>
+        </div>
   </body>
 </html>
