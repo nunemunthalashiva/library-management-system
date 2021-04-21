@@ -2,14 +2,26 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Add books</title>
+    <title>Add author</title>
   </head>
   <body>
+          <br><br><br>
+        <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>Add author</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
     <form action="{{ url_for('addauthor') }}" method="post">
       <div> {{msg}}</div>
       <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="ISBN_number" required><br><br>
       <input type="text" name="name" placeholder="Enter name of author" class="textbox" id="name" required><br><br>
       <input type="submit" value="Register">
     </form>
+                 <br>
+              <br>
+    
+            </div>
+        </div>
   </body>
 </html>
