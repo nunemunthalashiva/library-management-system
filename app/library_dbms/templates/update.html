@@ -2,10 +2,12 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="../static/style.css">
     <title></title>
   </head>
   <body>
     <form action="{{ url_for('update') }}" method="post">
+      <div class="msg">{{ msg }}</div>
        <input type="password" name="password" placeholder="Enter new password" class="textbox" id="password" required><br></br>
         <input type="address" name="address" placeholder="Enter Your address" class="textbox" id="mail_id" required><br></br>
         <input type = "submit" value ="update">
