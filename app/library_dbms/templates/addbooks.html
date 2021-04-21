@@ -6,13 +6,25 @@
   </head>
   <body>
     <form action="{{ url_for('addbooks') }}" method="post">
-      <div> {{msg}}</div>
-        <input type="text" name="title" placeholder="Enter title" class="textbox" id="title" required><br><br>
-      <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="ISBN_number" required><br><br>
-      <input type="number" name="copy_number" placeholder="Enter number of copies" class="textbox" id="copy_number" required><br><br>
-      <input type="date" name="publication_year" placeholder="Enter publication year" class="textbox" id="publication_year" required><br><br>
-      <input type="text" name="subject" placeholder="Enter Subject" class="textbox" id="subject" required><br><br>
-      <input type="submit" value="Register">
+            <br><br><br>
+        <div class="logincontent" align="center">
+            <div class="logintop">
+                <h1>Login</h1>
+            </div>
+            <br>
+            <div class="loginbottom">
+      <div class="msg">{{ msg }}</div>
+        <input type="text" name="title" placeholder="Enter title" class="textbox" id="mail_id" required><br><br>
+      <input type="text" name="ISBN_number" placeholder="Enter ISBN_number" class="textbox" id="mail_id" required><br><br>
+      <input type="number" name="copy_number" placeholder="Enter number of copies" class="textbox" id="mail_id" required><br><br>
+      <input type="date" name="publication_year" placeholder="Enter publication year" class="textbox" id="mail_id" required><br><br>
+      <input type="text" name="subject" placeholder="Enter Subject" class="textbox" id="mail_id" required><br><br>
+      <input type="submit" class="btn" value="Register">
     </form>
+                <br>
+              <br>
+    
+            </div>
+        </div>
   </body>
 </html>
