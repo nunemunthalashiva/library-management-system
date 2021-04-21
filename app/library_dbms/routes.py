@@ -416,3 +416,8 @@ def check_review():
         return render_template("check_review.html",msg=msg)
     msg = "please login first"
     return render_template("login.html",msg=msg)
+
+#-------------------books gallery--
+@app.route('/books_gallery')
+def books_gallery():
+    return render_template('books_gallery.html')
