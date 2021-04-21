@@ -358,7 +358,7 @@ def recommendations():
     if 'user_id' in session and (str(session['user_id'])[0] == '1' or str(session['user_id'])[0]== '2'):
         user_id = session['user_id']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT books.subject FROM review INNER JOIN books ON review.ISBN_number = books.ISBN_number WHERE user_id=(%s) AND rating > %s",(user_id,3,))
+        cursor.execute("SELECT subject FROM review NATURAL JOIN books WHERE user_id=(%s) AND rating > (%s)"),(user_id,3,))
         subjects = cursor.fetchone()
         if subjects:
             cursor.execute("SELECT * FROM books WHERE subject= (%s)",(subjects,))
