@@ -409,9 +409,9 @@ def check_review():
                 cursor.execute("SELECT * FROM review WHERE ISBN_number= (%s)",(ISBN_number,))
                 reviews = cursor.fetchall()
                 msg = " review of this book sre here"
-                return render_template('check_review_2',reviews=reviews,msg=msg)
+                return render_template('check_review_2.html',reviews=reviews,msg=msg)
             msg = 'invalid isbn number/no such books present in library'
-            return render_template('check_review',msg=msg)
+            return render_template('check_review.html',msg=msg)
         msg = 'please enter isbn number'
         return render_template("check_review.html",msg=msg)
     msg = "please login first"
