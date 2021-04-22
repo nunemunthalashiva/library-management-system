@@ -223,6 +223,8 @@ def addbooks():
 @app.route("/booksplace",methods=['GET','POST'])
 def booksplace():
     msg=''
+    if request.method=='GET':
+        return render_template('booksplace.html')
     if 'user_id' in session and str(session['user_id'])[0]=='3':
         if request.method=='POST' and 'shelf_id' in request.form and'ISBN_number' in request.form and 'book_quantity' in request.form:
             conn=mysql.connect
@@ -241,7 +243,7 @@ def booksplace():
                 return render_template('booksplace.html',msg=msg)
             return render_template('librarian_home.html',msg=msg)
         msg="Sorry please try again"
-        return render_template('addbooks.html',msg=msg)
+        return render_template('booksplace.html',msg=msg)
     msg="Sorry librarian not logged in"
     return render_template('login.html',msg=msg)
 
