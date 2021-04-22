@@ -10,7 +10,6 @@ or keep on hold the books without everytime reaching library to ask librarian to
                 
 ## Project layout
 
-    library-dbms/
                 app/
                     library_dbms/
                                 config.py
