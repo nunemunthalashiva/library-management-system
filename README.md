@@ -19,3 +19,12 @@ or keep on hold the books without everytime reaching library to ask librarian to
                                 static/
                      runserver.py
                 
+
+
+## setting up your local system
+
+  Make sure that your system contains <a href="https://dev.mysql.com/downloads/mysql/">MySQL server</a>
+  Next Install <a href="https://pypi.org/project/Flask/">Flask</a>
+  Consider installing <a href="https://pypi.org/project/MySQL-python/">MySQL-python connector</a>
+  Get to familiarize yourself with <a href="https://mysqlclient.readthedocs.io/user_guide.html">Mysqldb</a>
+  Next install <a href="https://pypi.org/project/python-dotenv/">Python dotenv</a> .If you would like to store some secret key.
