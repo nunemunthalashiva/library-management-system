@@ -128,6 +128,20 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
 
+@app.route('/remainders')
+def remainders():
+    if 'user_id' in session and str(session['user_id'])[0]=='1':
+        user_id = session['user_id']
+        msg='You dont have any books'
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        rem=cursor.execute("select user_id , ISBN_number , date_due from order_books where user_id = %s",(user_id,))
+        rem=cursor.fetchall()
+        if rem :
+            return render_template('remainders.html',rem=rem)
+        else :
+            return render_template('remainders.html',msg=msg)
+    return url_for('login')
+
 #adding a user
 @app.route('/adduser',methods=['GET','POST'])
 def adduser():
@@ -256,7 +270,8 @@ def order_books():
         if request.method=='GET':
             return render_template("order_books.html",msg=msg)
         if request.method=='POST' and 'ISBN_number' in request.form and 'status' in request.form :
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            conn=mysql.connect
+            cursor=conn.cursor()
             user_id = session['user_id']
             ISBN_number = request.form['ISBN_number']
             status = request.form['status']

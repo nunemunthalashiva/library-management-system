@@ -1,0 +1,34 @@
+<html lang="en">
+    <head>
+        <title>check_my_shelf</title>
+        <link rel="stylesheet" href="../static/style.css">
+    </head>
+<body>
+    <div class="one">
+        <div class="content" align="center">  <br>
+            <div class="contentbar">
+                <h1>Your remainders</h1>    <br>
+                {{ msg }}
+                 {% block content %}
+                    <div class="border">
+                        <table class="worddark"><br>
+                            {% for re in rem %}
+                            <tr>
+                                <td><h2>ISBN number   :</h2></td>
+                                <td><h2>{{ re['ISBN_number'] }}</h2></td>
+                            </tr>
+                            <tr>
+                                <td><h2>due date   :</h2></td>
+                                <td><h2>{{ re['date_due'] }}</h2></td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </table>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
