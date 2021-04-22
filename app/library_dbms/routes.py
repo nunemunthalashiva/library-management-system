@@ -369,9 +369,12 @@ def review():
                     if already_added:
                         msg="you have alredy reviewed this book"
                         return render_template("review.html",msg=msg)
-                    cursor.execute("INSERT INTO review VALUES(%s ,%s, %s, %s)",(user_id,ISBN_number,rating,discription,))
-                    mysql.connection.commit()
-                    msg='review recorded succesfully'
+                    if int(rating) <= 5:
+                        cursor.execute("INSERT INTO review VALUES(%s ,%s, %s, %s)",(user_id,ISBN_number,rating,discription,))
+                        mysql.connection.commit()
+                        msg='review recorded succesfully'
+                        return render_template("review.html",msg=msg)
+                    msg = 'rating cant be greater than 5'
                     return render_template("review.html",msg=msg)
                 msg = 'you havent read that book yet!'
                 return render_template("review.html",msg=msg)
