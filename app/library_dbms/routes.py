@@ -280,8 +280,7 @@ def order_books():
         if request.method=='GET':
             return render_template("order_books.html",msg=msg)
         if request.method=='POST' and 'ISBN_number' in request.form and 'status' in request.form :
-            conn=mysql.connect
-            cursor=conn.cursor()
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             user_id = session['user_id']
             ISBN_number = request.form['ISBN_number']
             status = request.form['status']
@@ -294,6 +293,11 @@ def order_books():
             cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
             ISBN_numbers=cursor.fetchone()
             if ISBN_numbers:
+                cursor.execute("select * from order_books where user_id= (%s) and ISBN_number = (%s) and status_of_book <> (%s)",(user_id,ISBN_number,'on_shelf',))
+                booked = cursor.fetchone()
+                if booked:
+                    msg = 'u have already booked this particular book'
+                    return render_template('order_books.html',msg=msg)
                 cursor.execute(("select ((select copy_number from books where ISBN_number=(%s))-(select count(*) from order_books where status_of_book<>(%s) and ISBN_number=(%s))) as Difference"),(ISBN_number,'on_shelf',ISBN_number,))
                 avaliable_books = cursor.fetchone()
                 if avaliable_books:
@@ -446,6 +450,36 @@ def check_review():
         return render_template("check_review.html",msg=msg)
     msg = "please login first"
     return render_template("login.html",msg=msg)
+
+
+#--------------------return book
+@app.route('/return_book',methods=['GET','POST'])
+def return_book():
+    msg = ''
+    if 'user_id' in session:
+        if request.method=='GET':
+            return render_template('return_book.html',msg = msg)
+        if 'ISBN_number' in request.form:
+            ISBN_number=request.form['ISBN_number']
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute("SELECT * FROM books WHERE ISBN_number=(%s)",(ISBN_number,))
+            ISBN_numbers=cursor.fetchone()
+            if ISBN_numbers:
+                cursor.execute("select * from order_books where ISBN_number = (%s) and user_id = (%s) and status_of_book<>(%s)",(ISBN_number,session['user_id'],'on_shelf'))
+                valid = cursor.fetchone()
+                if valid:
+                    cursor.execute("update order_books set status_of_book = (%s) where user_id =(%s) and ISBN_number = (%s)",('on_shelf',session['user_id'],ISBN_number,))
+                    mysql.connection.commit()
+                    msg = 'returned successfully'
+                    return render_template('return_book.html',msg=msg)
+                msg='you havent ordered/returned it'
+                return render_template('return_book.html',msg=msg)
+            msg='Invalid ISBN number'
+            return render_template('return_book.html',msg=msg)
+        msg = 'fill isbn number'
+        return render_template('return_book.html',msg=msg)
+    msg = 'please login first'
+    return render_template('return_book.html',msg=msg)
 
 #-------------------books gallery--
 @app.route('/books_gallery')
