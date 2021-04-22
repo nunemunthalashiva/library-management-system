@@ -87,13 +87,22 @@ def login():
 
 # ------------------------------------------------------------
 
+
 @app.route("/userdisplay")
 def userdisplay():
     if 'user_id' in session:
+        user_id=session['user_id']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM user WHERE user_id = % s', (session['user_id'], ))
+        cursor.execute('SELECT * FROM user WHERE user_id = %s', (user_id, ))
         user = cursor.fetchone()
-        return render_template("userdisplay.html", user = user)
+        cursor1 = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor1.execute('SELECT * from order_books where user_id = %s',(user_id,))
+        fine=cursor1.fetchone()
+        now=date.today()
+        if int(str(now - fine['date_due'])[0:2])>0:
+            cost = int(str(now - fine['date_due']))
+            return render_template("userdisplay.html", user = user,cost = cost)
+        return render_template("userdisplay.html",user=user)
     return redirect(url_for('login'))
 
 # --------------------------------------------------------------
@@ -128,14 +137,15 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('index'))
 
+
 @app.route('/remainders')
 def remainders():
     if 'user_id' in session and str(session['user_id'])[0]=='1':
         user_id = session['user_id']
-        msg='You dont have any books'
+        msg ='You dont have any books'
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        rem=cursor.execute("select user_id , ISBN_number , date_due from order_books where user_id = %s",(user_id,))
-        rem=cursor.fetchall()
+        rem = cursor.execute("select user_id , ISBN_number , date_due from order_books where user_id = %s",(user_id,))
+        rem = cursor.fetchall()
         if rem :
             return render_template('remainders.html',rem=rem)
         else :
